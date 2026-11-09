@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pension Planner DK - Fuld Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Venstremenu -->
+<div class="sidebar">
+    <div class="sidebar-brand">
+        💰 Pension Planner
+    </div>
+    <div class="sidebar-nav">
+        <a href="#" class="active">📊 Dashboard & Graf</a>
+        <a href="#kevenSection">👤 Keven</a>
+        <a href="#katrineSection">👤 Katrine</a>
+        <a href="#savings">🏡 Fælles opsparing & Boligsalg</a>
+        <a href="#settingsCard">⚙️ Nedsparing & Skat</a>
+        <a href="#annualBreakdownTable">📋 Årsopgørelse (Udbetalinger)</a>
+        <a href="#accountBreakdownSection">📈 Kontoudvikling & Saldi</a>
+        <a href="#summerHouseSection">🏠 Køb af sommerhus</a>
+        <a href="#savingsGoalSection">🎯 Specifikt opsparingsmål</a>
+    </div>
+    <div class="sidebar-footer">
+        <div class="theme-toggle-container">
+            <span>🌙 Mørkt tema</span>
+            <label class="switch">
+                <input type="checkbox" id="themeToggleSwitch">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="theme-toggle-container">
+            <span>📉 Reelle værdier</span>
+            <label class="switch">
+                <input type="checkbox" id="realValuesToggleSwitch">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<!-- Hovedindhold -->
+<div class="main-content">
+
+    <header>
+        <h1>Overblik & Simulation</h1>
+        <p>Avanceret pensions- og nedsparingssimulator med Folkepension & Scenarier</p>
+        <div style="margin-top: 12px; padding: 10px 14px; border: 1px solid rgba(148, 163, 184, 0.4); border-radius: 10px; background: rgba(59, 130, 246, 0.08); color: var(--text-color, #e2e8f0); font-size: 0.9rem; line-height: 1.5;">
+            <strong>Forenklet model:</strong> Beregningerne er en simpel pensionssimulator til planlægning og sammenligning. Ikke juridisk rådgivning, og ikke en fuldt detaljeret skattemodel.
+        </div>
+    </header>
+
+    <div class="dashboard">
+        <section class="card kpi">
+            <h3>Samlet formue i dag</h3>
+            <div id="currentWealth" class="number">0 kr.</div>
+        </section>
+
+        <section class="card kpi">
+            <h3>Månedlig udbetaling (netto)</h3>
+            <div id="monthlyNetPayout" class="number">0 kr.</div>
+            <small>Inflationsjusteret forbrugsbehov</small>
+        </section>
+
+        <section class="card kpi">
+            <h3>Formuen rækker til alder</h3>
+            <div id="depletionAge" class="number">95+ år</div>
+        </section>
+
+        <section class="card kpi">
+            <h3>Nødvendig ekstra opsparing</h3>
+            <div id="extraSavingsRequired" class="number" style="color:#d97706;">0 kr.</div>
+            <small>pr. md. i Frie Midler for at nå i mål</small>
+        </section>
+
+    </div>
+
+    <section class="card">
+        <h2>Formueudvikling (Opsparing & Nedsparing)</h2>
+        <div class="chart-container">
+            <canvas id="wealthChart"></canvas>
+        </div>
+    </section>
+
+    <div class="grid-2">
+        <!-- Kevin Card -->
+        <section class="card" id="kevenSection">
+            <h2>👤 Keven</h2>
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="kevAge">Alder i dag:</label>
+                    <input id="kevAge" type="number" value="39">
+                    <span class="unit">år</span>
+                </div>
+                <div class="form-row">
+                    <label for="kevRetire">Ønsket pensionsalder:</label>
+                    <input id="kevRetire" type="number" value="65">
+                    <span class="unit">år</span>
+                </div>
+                <div class="form-row">
+                    <label for="kevPensionPayoutAge">Pensionsudbetalingsalder:</label>
+                    <input id="kevPensionPayoutAge" type="number" value="60">
+                    <span class="unit">år</span>
+                </div>
+                <div class="form-row">
+                    <label for="kevStatePensionAge">Folkepensionsalder:</label>
+                    <input id="kevStatePensionAge" type="number" value="68">
+                    <span class="unit">år</span>
+                </div>
+                <div class="form-row">
+                    <label for="kevLifespan">Forventet levealder:</label>
+                    <input id="kevLifespan" type="number" value="85">
+                    <span class="unit">år</span>
+                </div>
+                <div class="form-row">
+                    <label for="kevStatePension">Folkepension + ATP (netto/md):</label>
+                    <input id="kevStatePension" type="text" class="currency" value="11.500">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="kevSalary">Månedsløn før skat:</label>
+                    <input id="kevSalary" type="text" class="currency" value="51.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="kevPensionPercent">Pension % (samlet):</label>
+                    <input id="kevPensionPercent" type="number" value="13">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+            <h4>Nuværende opsparing</h4>
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="kevWorkPension">Arbejdsgiverpension:</label>
+                    <input id="kevWorkPension" type="text" class="currency" value="700.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="kevAgeSaving">Aldersopsparing (start):</label>
+                    <input id="kevAgeSaving" type="text" class="currency" value="72.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="kevAgeSavingMonthly">Månedlig indbetaling (AOP):</label>
+                    <input id="kevAgeSavingMonthly" type="text" class="currency" value="825">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="kevAopPayoutAge">AOP udbetalingsalder:</label>
+                    <input id="kevAopPayoutAge" type="number" value="60">
+                    <span class="unit">år</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kat Card -->
+        <section class="card" id="katrineSection">
+            <h2>👤 Katrine</h2>
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="katAge">Alder i dag:</label>
+                    <input id="katAge" type="number" value="39">
+                    <span class="unit">år</span>
+                </div>
+                <div class="form-row">
+                    <label for="katRetire">Ønsket pensionsalder:</label>
+                    <input id="katRetire" type="number" value="65">
+                    <span class="unit">år</span>
+                </div>
+                <div class="form-row">
+                    <label for="katPensionPayoutAge">Pensionsudbetalingsalder:</label>
+                    <input id="katPensionPayoutAge" type="number" value="60">
+                    <span class="unit">år</span>
+                </div>
+                <div class="form-row">
+                    <label for="katStatePensionAge">Folkepensionsalder:</label>
+                    <input id="katStatePensionAge" type="number" value="68">
+                    <span class="unit">år</span>
+                </div>
+                <div class="form-row">
+                    <label for="katLifespan">Forventet levealder:</label>
+                    <input id="katLifespan" type="number" value="90">
+                    <span class="unit">år</span>
+                </div>
+                <div class="form-row">
+                    <label for="katStatePension">Folkepension + ATP (netto/md):</label>
+                    <input id="katStatePension" type="text" class="currency" value="11.500">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="katSalary">Månedsløn før skat:</label>
+                    <input id="katSalary" type="text" class="currency" value="38.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="katPensionPercent">Pension % (samlet):</label>
+                    <input id="katPensionPercent" type="number" value="15">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+            <h4>Nuværende opsparing</h4>
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="katWorkPension">Arbejdsgiverpension:</label>
+                    <input id="katWorkPension" type="text" class="currency" value="500.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="katAgeSaving">Aldersopsparing (start):</label>
+                    <input id="katAgeSaving" type="text" class="currency" value="50.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="katAgeSavingMonthly">Månedlig indbetaling (AOP):</label>
+                    <input id="katAgeSavingMonthly" type="text" class="currency" value="825">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="katAopPayoutAge">AOP udbetalingsalder:</label>
+                    <input id="katAopPayoutAge" type="number" value="60">
+                    <span class="unit">år</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="grid-2">
+        <!-- Fælles opsparing & friværdi -->
+        <section class="card" id="savings">
+            <h2>🏡 Fælles opsparing & Boligsalg</h2>
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="kevAsk">Keven ASK:</label>
+                    <input id="kevAsk" type="text" class="currency" value="75.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="katAsk">Katrine ASK:</label>
+                    <input id="katAsk" type="text" class="currency" value="50.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="sharedFreeMoney">Frie midler / Aktier:</label>
+                    <input id="sharedFreeMoney" type="text" class="currency" value="100.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="sharedFreeMoneyMonthly">Månedlig indbetaling til Frie midler:</label>
+                    <input id="sharedFreeMoneyMonthly" type="text" class="currency" value="2.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="sharedHomeEquity">Friværdi i bolig i dag:</label>
+                    <input id="sharedHomeEquity" type="text" class="currency" value="1.000.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <h4>Realisering af friværdi (Salgsplan)</h4>
+                <div class="form-row">
+                    <label for="homeSaleAge">Alder ved salg af bolig:</label>
+                    <input id="homeSaleAge" type="number" value="75">
+                    <span class="unit">år</span>
+                </div>
+                <div class="form-row">
+                    <label for="homeSalePayout">Frigjort beløb til frie midler:</label>
+                    <input id="homeSalePayout" type="text" class="currency" value="1.500.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="input-group spaced-top">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeHousingToggle" checked>
+                        <span>Inkluder boligsalg & friværdi i simulatoren (fravælg for at udelade spekulation)</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scenarier & Nedsparing -->
+        <section class="card" id="settingsCard">
+            <h2>⚙️ Nedsparing & Skat</h2>
+            
+            <div class="form-group section-spaced">
+                <h3>Ønsket samlet udbetaling (Netto pr. md.)</h3>
+                <div class="form-row">
+                    <label for="targetIncomeGoGo">"Go-go" (Op til 75 år):</label>
+                    <input id="targetIncomeGoGo" type="text" class="currency" value="40.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="targetIncomeSlowGo">"Slow-go" (76 - 85 år):</label>
+                    <input id="targetIncomeSlowGo" type="text" class="currency" value="32.000">
+                    <span class="unit">kr.</span>
+                </div>
+                <div class="form-row">
+                    <label for="targetIncomeNoGo">"No-go" (86+ år):</label>
+                    <input id="targetIncomeNoGo" type="text" class="currency" value="25.000">
+                    <span class="unit">kr.</span>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <h3>Forudsætninger</h3>
+                <div class="form-row">
+                    <label for="returnRate">Forventet afkast pr. år:</label>
+                    <input id="returnRate" type="number" value="6" step="0.1">
+                    <span class="unit">%</span>
+                </div>
+                <div class="form-row">
+                    <label for="inflationRate">Forventet inflation pr. år:</label>
+                    <input id="inflationRate" type="number" value="2" step="0.1">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="saveStorageBtn" class="btn-primary">💾 Gem data</button>
+                <button id="resetBtn" class="btn-secondary">Nulstil alt data</button>
+            </div>
+        </section>
+    </div>
+
+<!-- Årsopgørelse & Detaljeret Nedsparingsplan -->
+    <section class="card" id="annualBreakdownTable">
+        <h2>📋 Årsopgørelse & Pengestrømme (År for år)</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Alder</th>
+                        <th>Status</th>
+                        <th>Samlet Formue</th>
+                        <th>Nødvendigt brutto</th>
+                        <th>Public Ydelser</th>
+                        <th>ASK</th>
+                        <th>Frie Midler</th>
+                        <th>AOP</th>
+                        <th>Pensionsselskab</th>
+                        <th>Friværdi</th>
+                        <th>Skatter (årlig)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Udfyldes dynamisk -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+<!-- Kontoudvikling & Saldi (År for år) -->
+    <section class="card" id="accountBreakdownSection">
+        <h2>📈 Kontoudvikling & Saldi (År for år)</h2>
+        <p class="subtitle" style="margin-bottom: 15px; color: var(--text-muted); font-size: 0.9rem;">
+            Oversigt over de enkelte konti og aktivers saldo-progression gennem hele nedsparings- og opsparingsforløbet.
+        </p>
+        <div class="table-container">
+            <table id="balanceTable">
+                <thead>
+                    <tr>
+                        <th>Alder</th>
+                        <th>Status</th>
+                        <th>Frie Midler</th>
+                        <th>Aktiesparekonto (ASK)</th>
+                        <th>Aldersopsparing (AOP)</th>
+                        <th>Pensionsselskab</th>
+                        <th>Friværdi</th>
+                        <th>Samlet Formue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Udfyldes dynamisk af JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+<!-- Sektion: Køb af sommerhus -->
+<section class="card" id="summerHouseSection">
+    <h2>🏡 Køb af sommerhus</h2>
+    <p class="subtitle" style="margin-bottom: 15px; color: var(--text-muted); font-size: 0.9rem;">
+        Planlæg køb af et sommerhus midt i forløbet. Trækker udbetalingen fra frie midler og tilføjer værdien til formuen.
+    </p>
+    <div class="grid-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <div class="input-group">
+            <label for="shAge">Alder ved køb:</label>
+            <input type="number" id="shAge" value="50">
+        </div>
+        <div class="input-group">
+            <label for="shPrice">Pris på sommerhus (kr.):</label>
+            <input type="text" id="shPrice" class="currency" value="2000000">
+        </div>
+        <div class="input-group">
+            <label for="shDownPayment">Udbetaling / Kontant (kr.):</label>
+            <input type="text" id="shDownPayment" class="currency" value="500000">
+        </div>
+    </div>
+</section> 
+
+<!-- Sektion: Specifikt Opsparingsmål -->
+<section class="card" id="savingsGoalSection">
+    <h2>🎯 Specifikt Opsparingsmål</h2>
+    <p class="subtitle" style="margin-bottom: 15px; color: var(--text-muted); font-size: 0.9rem;">
+        Sæt et delmål for, hvor stor din formue skal være ved en bestemt alder.
+    </p>
+    <div class="grid-2" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <div class="input-group">
+            <label for="targetGoalAge">Mål-alder:</label>
+            <input type="number" id="targetGoalAge" value="60">
+        </div>
+        <div class="input-group">
+            <label for="targetGoalAmount">Målbeløb (kr.):</label>
+            <input type="text" id="targetGoalAmount" class="currency" value="5000000">
+        </div>
+    </div>
+    <div id="goalResultBox" style="margin-top: 15px; font-weight: 500;"></div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/data.js"></script>
+<script src="js/models.js"></script>
+<script src="js/calculations.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
